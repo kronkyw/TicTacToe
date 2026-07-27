@@ -1,3 +1,0 @@
-import TicTacToe
-
-TicTacToe.printboard()
