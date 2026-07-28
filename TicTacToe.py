@@ -69,7 +69,6 @@ def check_for_win():
     for i in range(BOARD_LEN):
         if check(i, i) == False: 
             break
-        X = 0; O = 0
     X = 0; O = 0
     for i in range(BOARD_LEN):
         if check(BOARD_LEN - 1 - i, i) == False: 
