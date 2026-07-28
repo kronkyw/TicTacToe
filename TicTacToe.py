@@ -1,5 +1,4 @@
-# A module for my TicTacToe game
-
+# Simple TicTacToe game, my first time working with a GUI, so not too pretty
 import tkinter as tk
 from tkinter import ttk
 
@@ -14,16 +13,17 @@ window.title("TicTacToe")
 turns = 0
 
 restart = ttk.Button(window, text = "Restart", command = lambda: create_board())
+label = ttk.Label(window)
 
 current_player = 'X'
 
 # The TicTacToe board
-Board = [[''] * BOARD_LEN] * BOARD_LEN
+Board = [['' for j in range(BOARD_LEN)] for i in range(BOARD_LEN)]
 
 # Stores the info on the board
-Board_info = [[''] * BOARD_LEN] * BOARD_LEN
+Board_info = [['' for i in range(BOARD_LEN)] for j in range(BOARD_LEN)]
 
-frame = ttk.Frame(window, width = 500, height = 500)
+frame = ttk.Frame(window)
 frame['borderwidth'] = 5
 
 # Configures the rows, should only be done once
@@ -34,10 +34,11 @@ for i in range (BOARD_LEN):
 # Creates the board
 def create_board():
     frame.pack()
-    if restart.winfo_exists():
-        restart.pack_forget()
+    restart.pack_forget()
+    label.pack_forget()
     for i in range (BOARD_LEN):
             for j in range (BOARD_LEN):
+                Board_info[i][j] = ''
                 Board[i][j] = ttk.Button(frame, text = '', command = lambda i=i, j=j: button_clicked(i, j))
                 Board[i][j].grid(column = i, row = j)
 
@@ -49,24 +50,79 @@ def switch_player():
     elif current_player == 'O':
         return 'X'
 
-#Activates when someone clicks one of the buttons on the board
+def check_for_win():
+    X = 0
+    O = 0
+    for i in range(BOARD_LEN):
+        for j in range(BOARD_LEN):
+            if Board_info[i][j] == 'X' and O == 0:
+                X += 1
+            elif Board_info[i][j] == 'O' and X == 0:
+                O += 1
+            else:
+                break
+            if X == BOARD_LEN: game_finished('X')
+            if O == BOARD_LEN: game_finished('O')
+        X = 0
+        O = 0
+    for i in range(BOARD_LEN):
+        for j in range(BOARD_LEN):
+            if Board_info[j][i] == 'X' and O == 0:
+                X += 1
+            elif Board_info[j][i] == 'O' and X == 0:
+                O += 1
+            else:
+                break
+            if X == BOARD_LEN: game_finished('X')
+            if O == BOARD_LEN: game_finished('O')
+        X = 0
+        O = 0
+    for i in range(BOARD_LEN):
+        if Board_info[i][i] == 'X' and O == 0:
+            X += 1
+        elif Board_info[i][i] == 'O' and X == 0:
+            O += 1
+        else:
+            break
+        if X == BOARD_LEN: game_finished('X')
+        if O == BOARD_LEN: game_finished('O')
+    for i in range(BOARD_LEN):
+        if Board_info[BOARD_LEN - 1 - i][i] == 'X' and O == 0:
+            X += 1
+        elif Board_info[BOARD_LEN - 1 - i][i] == 'O' and X == 0:
+            O += 1
+        else:
+            break
+        if X == BOARD_LEN: game_finished('X')
+        if O == BOARD_LEN: game_finished('O')
+    return False
+
+# Activates when someone clicks one of the buttons on the board
 def button_clicked(x, y):
     global current_player
     global turns
-    print(x, y, current_player)
     Board[x][y] = ttk.Button(frame, text = current_player)
     Board[x][y].grid(column = x, row = y)
-    Board_info[x][y] = current_player
+    Board_info[y][x] = current_player
+    print(x, y, current_player, turns)
+    print(Board_info[0])
+    print(Board_info[1])
+    print(Board_info[2])
     current_player = switch_player()
     turns += 1
-    if turns == BOARD_LEN * BOARD_LEN:
-        game_finished()
+    check_for_win()
+    if turns == BOARD_LEN * BOARD_LEN and check_for_win() == False:
+        game_finished('D')
 
-def game_finished():
-    Board_info = [[''] * BOARD_LEN] * BOARD_LEN
+def game_finished(winner):
+    global current_player
+    global turns
+    turns = 0
+    current_player = 'X'
+    label.config(text = ("Winner: ", winner))
     frame.pack_forget()
     restart.pack()
-    
+    label.pack()
 
 create_board()
 
