@@ -1,1 +1,5 @@
-Simple python TicTacToe game made on arch linux with hyprland using Python 3.14.6, to download and use simply download the TicTacToe.tar.gz file, unzip it open it and run TicTacToe. Hyprland can interact weirdly with windows so please report any issues with window behaivour 
+Simple python TicTacToe game made on arch linux with hyprland using Python 3.14.6, to download and use simply download the TicTacToe.zip file, unzip it open it and run TicTacToe. Hyprland can interact weirdly with windows so please report any issues with window behaivour.
+
+Binary specifications:
+Arch linux
+x86_64
